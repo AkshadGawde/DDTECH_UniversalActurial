@@ -45,6 +45,17 @@ export default function Hero({
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-primary-50">
+      {/* Background image with overlay */}
+      <div className="absolute inset-0">
+        <motion.div
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070')] bg-cover bg-center"
+        />
+        <div className="absolute inset-0 bg-linear-to-br from-white/95 via-white/90 to-primary/20" />
+      </div>
+      
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div

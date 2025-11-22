@@ -41,38 +41,48 @@ export default function SectorCard({
         <motion.div
           whileHover={{ scale: 1.15, rotate: 2 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="w-full h-full"
+          className="w-full h-full relative"
         >
-          <div className="w-full h-full bg-linear-to-br from-primary/80 to-accent/80 relative">
-            {/* Animated gradient overlay */}
+          {/* Real image */}
+          <Image
+            src={imagePlaceholder}
+            alt={title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+          
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-linear-to-br from-primary/70 to-accent/70" />
+          
+          {/* Animated gradient overlay on hover */}
+          <motion.div
+            className="absolute inset-0 bg-linear-to-br from-accent/50 to-primary/50"
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+          
+          {/* Floating particles */}
+          {[...Array(3)].map((_, i) => (
             <motion.div
-              className="absolute inset-0 bg-linear-to-br from-accent/50 to-primary/50"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              key={i}
+              className="absolute w-2 h-2 bg-white/30 rounded-full"
+              style={{
+                left: `${20 + i * 30}%`,
+                top: `${30 + i * 20}%`,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                opacity: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: 2 + i,
+                repeat: Infinity,
+                delay: i * 0.3,
+              }}
             />
-            
-            {/* Floating particles */}
-            {[...Array(3)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-white/30 rounded-full"
-                style={{
-                  left: `${20 + i * 30}%`,
-                  top: `${30 + i * 20}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 1, 0.3],
-                }}
-                transition={{
-                  duration: 2 + i,
-                  repeat: Infinity,
-                  delay: i * 0.3,
-                }}
-              />
-            ))}
-          </div>
+          ))}
         </motion.div>
         <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
         

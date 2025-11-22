@@ -79,13 +79,26 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <AnimatedSection animation="slideRight">
-              <div className="relative h-[500px] rounded-2xl overflow-hidden">
-                <div className="absolute inset-0 bg-linear-to-br from-primary to-accent opacity-90" />
+              <div className="relative h-[500px] rounded-2xl overflow-hidden group">
+                <motion.div
+                  initial={{ scale: 1.1 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2 }}
+                  className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070')] bg-cover bg-center"
+                />
+                <div className="absolute inset-0 bg-linear-to-br from-primary/90 to-accent/90 group-hover:from-primary/80 group-hover:to-accent/80 transition-all duration-500" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white p-8">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="text-center text-white p-8"
+                  >
                     <h3 className="text-6xl font-bold mb-4">25+</h3>
                     <p className="text-2xl">Years of Excellence</p>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
             </AnimatedSection>

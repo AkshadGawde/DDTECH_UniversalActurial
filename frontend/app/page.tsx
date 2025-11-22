@@ -7,6 +7,7 @@ import SectorCard from '@/components/SectorCard';
 import Stats from '@/components/Stats';
 import CTA from '@/components/CTA';
 import AnimatedSection from '@/components/AnimatedSection';
+import { motion } from 'framer-motion';
 import { 
   Calculator, 
   Shield, 
@@ -48,31 +49,37 @@ const sectors = [
     icon: Building2,
     title: 'Corporate Sector',
     description: 'Tailored actuarial solutions for large corporations and multinational enterprises.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070',
   },
   {
     icon: Factory,
     title: 'Manufacturing',
     description: 'Specialized services for manufacturing industries and industrial organizations.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070',
   },
   {
     icon: Landmark,
     title: 'Financial Services',
     description: 'Expert consulting for banks, insurance companies, and financial institutions.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
   },
   {
     icon: Heart,
     title: 'Healthcare',
     description: 'Comprehensive benefit solutions for healthcare providers and medical institutions.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1538108149393-fbbd81895907?q=80&w=2128',
   },
   {
     icon: Briefcase,
     title: 'Professional Services',
     description: 'Customized actuarial services for consulting firms and professional service providers.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1664575602276-acd073f104c1?q=80&w=2070',
   },
   {
     icon: GraduationCap,
     title: 'Education',
     description: 'Benefit consulting and risk management for educational institutions and universities.',
+    imagePlaceholder: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070',
   },
 ];
 
@@ -137,6 +144,64 @@ export default function Home() {
                 description={sector.description}
                 delay={index * 0.1}
               />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Visual Showcase Section */}
+      <section className="section-padding bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
+          <SectionHeader
+            subtitle="Our Work Environment"
+            title="Where Excellence Meets Innovation"
+            description="A glimpse into our collaborative workspace and professional culture."
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069',
+                alt: 'Modern office workspace',
+                title: 'Collaborative Workspace',
+              },
+              {
+                src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
+                alt: 'Business analytics',
+                title: 'Data-Driven Insights',
+              },
+              {
+                src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974',
+                alt: 'Team collaboration',
+                title: 'Expert Team',
+              },
+            ].map((image, index) => (
+              <AnimatedSection key={index} animation="scaleIn" delay={index * 0.1}>
+                <motion.div
+                  className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer"
+                  whileHover={{ y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div
+                    initial={{ scale: 1.1 }}
+                    whileInView={{ scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2 }}
+                    whileHover={{ scale: 1.05 }}
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url('${image.src}')` }}
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-primary/90 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <motion.div
+                    initial={{ y: 20, opacity: 0 }}
+                    whileHover={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute bottom-0 left-0 right-0 p-6 text-white"
+                  >
+                    <h3 className="text-xl font-bold">{image.title}</h3>
+                  </motion.div>
+                </motion.div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
