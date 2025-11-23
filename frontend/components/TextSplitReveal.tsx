@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
 
 interface TextSplitRevealProps {
   children: string;
@@ -18,13 +17,13 @@ export default function TextSplitReveal({
 }: TextSplitRevealProps) {
   const container = {
     hidden: { opacity: 0 },
-    visible: (i = 1) => ({
+    visible: {
       opacity: 1,
       transition: {
         staggerChildren: type === 'letters' ? 0.02 : 0.05,
         delayChildren: delay,
       },
-    }),
+    },
   };
 
   const child = {
@@ -38,7 +37,7 @@ export default function TextSplitReveal({
       y: 0,
       rotateX: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 12,
         stiffness: 100,
       },
