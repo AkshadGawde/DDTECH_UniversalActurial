@@ -1,9 +1,9 @@
 'use client';
 
-import { motion, useAnimation } from 'framer-motion';
-import { ArrowRight, ChevronDown, Sparkles } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useRef } from 'react';
 
 interface HeroProps {
   title: string;
@@ -22,19 +22,19 @@ export default function Hero({
   ctaLink = '/contact',
   showScrollIndicator = true,
 }: HeroProps) {
-  const controls = useAnimation();
+  const containerRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end start'],
+  });
 
-  useEffect(() => {
-    controls.start({
-      opacity: [0.4, 0.8, 0.4],
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 8,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    });
-  }, [controls]);
+  // Parallax transforms for different layers
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const orbsY = useTransform(scrollYProgress, [0, 1], ['0%', '70%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -44,9 +44,16 @@ export default function Hero({
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-primary-50">
-      {/* Background image with overlay */}
-      <div className="absolute inset-0">
+    <section 
+      ref={containerRef}
+      data-scroll-section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-primary-50"
+    >
+      {/* Multi-layer Parallax Background */}
+      <motion.div 
+        className="absolute inset-0"
+        style={{ y: backgroundY, scale }}
+      >
         <motion.div
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 0.15 }}
@@ -54,10 +61,13 @@ export default function Hero({
           className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070')] bg-cover bg-center"
         />
         <div className="absolute inset-0 bg-linear-to-br from-white/95 via-white/90 to-primary/20" />
-      </div>
+      </motion.div>
       
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated background elements with parallax */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        style={{ y: orbsY }}
+      >
         <motion.div
           className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
           animate={{
@@ -121,9 +131,12 @@ export default function Hero({
             }}
           />
         ))}
-      </div>
+      </motion.div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-32">
+      <motion.div 
+        className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-32"
+        style={{ y: contentY, opacity }}
+      >
         <div className="max-w-4xl">
           {subtitle && (
             <motion.div
@@ -220,7 +233,7 @@ export default function Hero({
             </Link>
           </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {showScrollIndicator && (
         <motion.button
@@ -228,7 +241,7 @@ export default function Hero({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 hover:text-primary transition-colors"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 hover:text-primary transition-colors z-20"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}

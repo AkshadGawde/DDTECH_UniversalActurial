@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import { useRef, useState } from 'react';
 import Link from 'next/link';
@@ -31,6 +31,14 @@ export default function ServiceCard({
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7.5deg', '-7.5deg']);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7.5deg', '7.5deg']);
+
+  // Parallax scroll effect
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+
+  const cardY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%']);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
@@ -73,6 +81,7 @@ export default function ServiceCard({
         style={{
           rotateX,
           rotateY,
+          y: cardY,
           transformStyle: 'preserve-3d',
         }}
         whileHover={{

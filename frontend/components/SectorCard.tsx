@@ -1,8 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { LucideIcon } from 'lucide-react';
 import Image from 'next/image';
+import { useRef } from 'react';
 
 interface SectorCardProps {
   icon: LucideIcon;
@@ -19,8 +20,19 @@ export default function SectorCard({
   imagePlaceholder = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
   delay = 0,
 }: SectorCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
+
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
@@ -36,11 +48,12 @@ export default function SectorCard({
       }}
       className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
     >
-      {/* Image with overlay */}
+      {/* Image with overlay and parallax */}
       <div className="relative h-56 overflow-hidden">
         <motion.div
           whileHover={{ scale: 1.15, rotate: 2 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
+          style={{ y: imageY }}
           className="w-full h-full relative"
         >
           {/* Real image */}
@@ -113,8 +126,8 @@ export default function SectorCard({
         </motion.div>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
+      {/* Content with parallax */}
+      <motion.div className="p-6" style={{ y: contentY }}>
         <motion.h3 
           className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors"
           whileHover={{ x: 5 }}
@@ -144,7 +157,7 @@ export default function SectorCard({
             }}
           />
         </motion.div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 }

@@ -7,6 +7,9 @@ import SectorCard from '@/components/SectorCard';
 import Stats from '@/components/Stats';
 import CTA from '@/components/CTA';
 import AnimatedSection from '@/components/AnimatedSection';
+import ScrollReveal from '@/components/ScrollReveal';
+import TextSplitReveal from '@/components/TextSplitReveal';
+import AdvancedImageReveal from '@/components/AdvancedImageReveal';
 import { motion } from 'framer-motion';
 import { 
   Calculator, 
@@ -106,7 +109,7 @@ export default function Home() {
       <Stats stats={stats} />
 
       {/* Services Section */}
-      <section className="section-padding bg-gray-50">
+      <section data-scroll-section className="section-padding bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <SectionHeader
             subtitle="What We Offer"
@@ -128,7 +131,7 @@ export default function Home() {
       </section>
 
       {/* Sectors Section */}
-      <section className="section-padding bg-white">
+      <section data-scroll-section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <SectionHeader
             subtitle="Industries We Serve"
@@ -150,13 +153,15 @@ export default function Home() {
       </section>
 
       {/* Visual Showcase Section */}
-      <section className="section-padding bg-white">
+      <section data-scroll-section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-          <SectionHeader
-            subtitle="Our Work Environment"
-            title="Where Excellence Meets Innovation"
-            description="A glimpse into our collaborative workspace and professional culture."
-          />
+          <ScrollReveal direction="up" distance={60}>
+            <SectionHeader
+              subtitle="Our Work Environment"
+              title="Where Excellence Meets Innovation"
+              description="A glimpse into our collaborative workspace and professional culture."
+            />
+          </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -164,60 +169,82 @@ export default function Home() {
                 src: 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069',
                 alt: 'Modern office workspace',
                 title: 'Collaborative Workspace',
+                direction: 'left' as const,
               },
               {
                 src: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070',
                 alt: 'Business analytics',
                 title: 'Data-Driven Insights',
+                direction: 'up' as const,
               },
               {
                 src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=1974',
                 alt: 'Team collaboration',
                 title: 'Expert Team',
+                direction: 'right' as const,
               },
             ].map((image, index) => (
-              <AnimatedSection key={index} animation="scaleIn" delay={index * 0.1}>
+              <ScrollReveal key={index} direction={image.direction} delay={index * 0.1} distance={80}>
                 <motion.div
-                  className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer"
+                  className="relative h-80 rounded-2xl overflow-hidden group cursor-hover"
+                  data-cursor-text="View"
                   whileHover={{ y: -10 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <motion.div
-                    initial={{ scale: 1.1 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.2 }}
-                    whileHover={{ scale: 1.05 }}
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url('${image.src}')` }}
+                  <AdvancedImageReveal
+                    src={image.src}
+                    alt={image.alt}
+                    className="absolute inset-0"
+                    revealDirection="center"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-primary/90 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     whileHover={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="absolute bottom-0 left-0 right-0 p-6 text-white"
+                    className="absolute bottom-0 left-0 right-0 p-6 text-white z-10"
                   >
                     <h3 className="text-xl font-bold">{image.title}</h3>
                   </motion.div>
                 </motion.div>
-              </AnimatedSection>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* Why Choose Us Section */}
-      <AnimatedSection animation="fadeIn" className="section-padding bg-gray-50">
+      <AnimatedSection animation="fadeIn" data-scroll-section className="section-padding bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-          <SectionHeader
-            subtitle="Why Choose Us"
-            title="Your Trusted Partner"
-            description="Combining expertise, innovation, and dedication to deliver exceptional results."
-          />
+          <div className="text-center mb-16">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-accent font-semibold mb-4"
+            >
+              Why Choose Us
+            </motion.p>
+            <TextSplitReveal 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary mb-6"
+              type="words"
+            >
+              Your Trusted Partner
+            </TextSplitReveal>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="text-gray-600 max-w-2xl mx-auto text-lg"
+            >
+              Combining expertise, innovation, and dedication to deliver exceptional results.
+            </motion.p>
+          </div>
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <AnimatedSection animation="slideUp" delay={0.1}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <ScrollReveal direction="left" delay={0.1}>
+              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow cursor-hover" data-cursor-text="Learn">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <span className="text-3xl">🎯</span>
                 </div>
@@ -226,10 +253,10 @@ export default function Home() {
                   Certified professionals with decades of combined experience in actuarial science and employee benefits.
                 </p>
               </div>
-            </AnimatedSection>
+            </ScrollReveal>
 
-            <AnimatedSection animation="slideUp" delay={0.2}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <ScrollReveal direction="up" delay={0.2}>
+              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow cursor-hover" data-cursor-text="Explore">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <span className="text-3xl">💡</span>
                 </div>
@@ -238,10 +265,10 @@ export default function Home() {
                   Leveraging cutting-edge technology and methodologies to provide forward-thinking solutions.
                 </p>
               </div>
-            </AnimatedSection>
+            </ScrollReveal>
 
-            <AnimatedSection animation="slideUp" delay={0.3}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg">
+            <ScrollReveal direction="right" delay={0.3}>
+              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-shadow cursor-hover" data-cursor-text="Discover">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <span className="text-3xl">🤝</span>
                 </div>
@@ -250,7 +277,7 @@ export default function Home() {
                   Dedicated to understanding your unique needs and delivering customized solutions that drive success.
                 </p>
               </div>
-            </AnimatedSection>
+            </ScrollReveal>
           </div>
         </div>
       </AnimatedSection>

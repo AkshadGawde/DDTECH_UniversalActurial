@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useInView, useSpring, useTransform } from 'framer-motion';
+import { motion, useInView, useSpring, useTransform, useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 interface Stat {
@@ -45,15 +45,30 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: Stat) {
 }
 
 export default function Stats({ stats }: StatsProps) {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const cardsY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
+
   return (
-    <section className="section-padding bg-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 opacity-5">
+    <section ref={sectionRef} data-scroll-section className="section-padding bg-white relative overflow-hidden">
+      {/* Background decoration with parallax */}
+      <motion.div 
+        className="absolute inset-0 opacity-5"
+        style={{ y: backgroundY }}
+      >
         <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent rounded-full blur-3xl" />
-      </div>
+      </motion.div>
       
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 relative">
+      <motion.div 
+        className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 relative"
+        style={{ y: cardsY }}
+      >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <motion.div
@@ -114,7 +129,7 @@ export default function Stats({ stats }: StatsProps) {
             </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
