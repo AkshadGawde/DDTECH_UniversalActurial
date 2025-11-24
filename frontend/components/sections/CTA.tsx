@@ -1,196 +1,116 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { LucideIcon } from 'lucide-react';
+import Image from 'next/image';
+import { useRef } from 'react';
 
-interface CTAProps {
+interface SectorCardProps {
+  icon: LucideIcon;
   title: string;
   description: string;
-  primaryButtonText?: string;
-  primaryButtonLink?: string;
-  secondaryButtonText?: string;
-  secondaryButtonLink?: string;
+  imagePlaceholder?: string;
+  delay?: number;
 }
 
-export default function CTA({
+export default function SectorCard({
+  icon: Icon,
   title,
   description,
-  primaryButtonText = 'Get Started',
-  primaryButtonLink = '/contact',
-  secondaryButtonText,
-  secondaryButtonLink = '/services',
-}: CTAProps) {
+  imagePlaceholder = 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800',
+  delay = 0,
+}: SectorCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ['start end', 'end start'],
+  });
+
+  // Subtle parallax
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
+
   return (
-    <section className="section-padding bg-linear-to-br from-primary to-primary-700 text-white relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden">
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{
+        duration: 0.6,
+        delay,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
+      whileHover={{
+        y: -8,
+        transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
+      }}
+      className="group relative rounded-2xl overflow-hidden cursor-pointer h-full shadow-sm hover:shadow-xl transition-shadow duration-500"
+    >
+      {/* Image with parallax */}
+      <div className="relative h-64 overflow-hidden">
         <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-          className="absolute -top-20 -right-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-          className="absolute -bottom-20 -left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"
-        />
-        
-        {/* Floating particles */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-white/20 rounded-full"
-            style={{
-              left: `${10 + i * 12}%`,
-              top: `${20 + (i % 3) * 30}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.2, 0.8, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 3 + (i % 3),
-              repeat: Infinity,
-              delay: i * 0.4,
-            }}
+          style={{ y: imageY }}
+          className="absolute inset-0 w-full h-[120%]"
+        >
+          <Image
+            src={imagePlaceholder}
+            alt={title}
+            fill
+            className="object-cover"
           />
-        ))}
-        
-        {/* Animated grid lines */}
-        <motion.div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent)',
-            backgroundSize: '50px 50px',
-          }}
-          animate={{
-            backgroundPosition: ['0px 0px', '50px 50px'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </div>
+        </motion.div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.6,
-              type: 'spring',
-              stiffness: 100,
-            }}
-            className="text-4xl md:text-5xl font-bold mb-6 relative"
-          >
-            {title}
-            {/* Underline decoration */}
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: '100px' }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="h-1 bg-accent mx-auto mt-4 rounded-full"
-            />
-          </motion.h2>
+        {/* Dark overlay - muted */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ 
-              duration: 0.6, 
-              delay: 0.2,
-              type: 'spring',
-              stiffness: 100,
-            }}
-            className="text-lg md:text-xl mb-10 text-white/90"
-          >
-            {description}
-          </motion.p>
-
+        {/* Icon */}
+        <div className="absolute top-6 left-6 z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="w-14 h-14 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center shadow-lg"
           >
-            <Link href={primaryButtonLink}>
-              <motion.button
-                whileHover={{ 
-                  scale: 1.08,
-                  boxShadow: '0 20px 60px rgba(230, 57, 70, 0.4)',
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="group bg-accent text-white px-8 py-4 rounded-lg font-semibold shadow-xl hover:shadow-2xl transition-all flex items-center justify-center space-x-2 relative overflow-hidden"
-              >
-                {/* Button shine effect */}
-                <motion.div
-                  className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent skew-x-12"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '200%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">{primaryButtonText}</span>
-                <motion.div
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                  className="relative z-10"
-                >
-                  <ArrowRight size={20} />
-                </motion.div>
-              </motion.button>
-            </Link>
-
-            {secondaryButtonText && (
-              <Link href={secondaryButtonLink}>
-                <motion.button
-                  whileHover={{ 
-                    scale: 1.08,
-                    backgroundColor: 'rgba(255, 255, 255, 0.25)',
-                    borderColor: 'rgba(255, 255, 255, 0.6)',
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-lg font-semibold border-2 border-white/30 hover:bg-white/20 transition-all relative overflow-hidden"
-                >
-                  {/* Glow effect on hover */}
-                  <motion.div
-                    className="absolute inset-0 bg-white/5"
-                    initial={{ opacity: 0 }}
-                    whileHover={{ 
-                      opacity: [0, 1, 0],
-                      scale: [0.8, 1.2],
-                    }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  />
-                  <span className="relative z-10">{secondaryButtonText}</span>
-                </motion.button>
-              </Link>
-            )}
+           {Icon && (
+  <Icon className="w-7 h-7 text-white" />
+)}
           </motion.div>
         </div>
       </div>
-    </section>
+
+      {/* Content */}
+      <div className="relative bg-white p-6 border-t-2 border-[#1E3A8A]/10 group-hover:border-[#DC2626]/30 transition-colors duration-500">
+        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-[#1E3A8A] transition-colors duration-300">
+          {title}
+        </h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          {description}
+        </p>
+
+        {/* Hover indicator */}
+        <motion.div
+          initial={{ x: -10, opacity: 0 }}
+          whileHover={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.3 }}
+          className="absolute bottom-6 right-6 text-[#DC2626] group-hover:translate-x-1 transition-transform"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </motion.div>
+      </div>
+
+      {/* Subtle corner accent */}
+      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    </motion.div>
   );
 }

@@ -21,143 +21,96 @@ export default function SectorCard({
   delay = 0,
 }: SectorCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  
   const { scrollYProgress } = useScroll({
     target: cardRef,
     offset: ['start end', 'end start'],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
+  // Subtle parallax
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
 
   return (
     <motion.div
       ref={cardRef}
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      transition={{ 
-        duration: 0.5, 
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-50px' }}
+      transition={{
+        duration: 0.6,
         delay,
-        type: 'spring',
-        stiffness: 100,
+        ease: [0.25, 0.1, 0.25, 1],
       }}
-      whileHover={{ 
-        y: -15,
-        transition: { duration: 0.3 },
+      whileHover={{
+        y: -8,
+        transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
       }}
-      className="group relative bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+      className="group relative rounded-2xl overflow-hidden cursor-pointer h-full shadow-sm hover:shadow-xl transition-shadow duration-500"
     >
-      {/* Image with overlay and parallax */}
-      <div className="relative h-56 overflow-hidden">
+      {/* Image with parallax */}
+      <div className="relative h-64 overflow-hidden">
         <motion.div
-          whileHover={{ scale: 1.15, rotate: 2 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
           style={{ y: imageY }}
-          className="w-full h-full relative"
+          className="absolute inset-0 w-full h-[120%]"
         >
-          {/* Real image */}
           <Image
             src={imagePlaceholder}
             alt={title}
             fill
             className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          
-          {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-linear-to-br from-primary/70 to-accent/70" />
-          
-          {/* Animated gradient overlay on hover */}
-          <motion.div
-            className="absolute inset-0 bg-linear-to-br from-accent/50 to-primary/50"
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          />
-          
-          {/* Floating particles */}
-          {[...Array(3)].map((_, i) => (
+        </motion.div>
+
+        {/* Dark overlay - muted */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+
+        {/* Icon - Check if Icon exists */}
+        {Icon && (
+          <div className="absolute top-6 left-6 z-10">
             <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-white/30 rounded-full"
-              style={{
-                left: `${20 + i * 30}%`,
-                top: `${30 + i * 20}%`,
-              }}
-              animate={{
-                y: [0, -20, 0],
-                opacity: [0.3, 1, 0.3],
-              }}
-              transition={{
-                duration: 2 + i,
-                repeat: Infinity,
-                delay: i * 0.3,
-              }}
-            />
-          ))}
-        </motion.div>
-        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent" />
-        
-        {/* Icon on image */}
-        <motion.div
-          initial={{ scale: 1 }}
-          whileHover={{ 
-            scale: 1.15, 
-            rotate: [0, -5, 5, 0],
-            y: -5,
-          }}
-          transition={{ duration: 0.5 }}
-          className="absolute top-6 left-6 w-14 h-14 bg-white rounded-xl flex items-center justify-center shadow-lg overflow-hidden"
-        >
-          {/* Icon background pulse */}
-          <motion.div
-            className="absolute inset-0 bg-primary/10"
-            animate={{
-              scale: [1, 1.5, 1],
-              opacity: [0.5, 0, 0.5],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-            }}
-          />
-          <Icon size={28} className="text-primary relative z-10" />
-        </motion.div>
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="w-14 h-14 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center shadow-lg"
+            >
+              <Icon className="w-7 h-7 text-white" />
+            </motion.div>
+          </div>
+        )}
       </div>
 
-      {/* Content with parallax */}
-      <motion.div className="p-6" style={{ y: contentY }}>
-        <motion.h3 
-          className="text-xl font-bold text-primary mb-3 group-hover:text-accent transition-colors"
-          whileHover={{ x: 5 }}
-          transition={{ duration: 0.3 }}
-        >
+      {/* Content */}
+      <div className="relative bg-white p-6 border-t-2 border-[#1E3A8A]/10 group-hover:border-[#DC2626]/30 transition-colors duration-500">
+        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-[#1E3A8A] transition-colors duration-300">
           {title}
-        </motion.h3>
-        <p className="text-gray-600 leading-relaxed">{description}</p>
+        </h3>
+        <p className="text-slate-600 text-sm leading-relaxed">
+          {description}
+        </p>
 
         {/* Hover indicator */}
         <motion.div
-          initial={{ width: 0 }}
-          whileHover={{ width: '100%' }}
-          className="h-1 bg-accent rounded-full mt-4 relative overflow-hidden"
+          initial={{ x: -10, opacity: 0 }}
+          whileHover={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.3 }}
+          className="absolute bottom-6 right-6 text-[#DC2626] group-hover:translate-x-1 transition-transform"
         >
-          {/* Shine effect on indicator */}
-          <motion.div
-            className="absolute inset-0 bg-linear-to-r from-transparent via-white/50 to-transparent"
-            animate={{
-              x: ['-100%', '200%'],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 1,
-            }}
-          />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
         </motion.div>
-      </motion.div>
+      </div>
+
+      {/* Subtle corner accent */}
+      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   );
 }

@@ -60,27 +60,29 @@
   --border: 217.2 32.6% 17.5%;
   --input: 217.2 32.6% 17.5%;
   --ring: 224.3 76.3% 48%;
-  --chart-1: 220 70% 50%;
-  --chart-2: 160 60% 45%;
-  --chart-3: 30 80% 55%;
-  --chart-4: 280 65% 60%;
-  --chart-5: 340 75% 55%;
 }
 
-/* Smooth Scroll */
+/* Smooth Scroll Base */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-html.lenis,
-html.lenis body {
-  height: auto;
+body {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+/* Scroll Snap Utilities */
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  min-height: 100vh;
+  min-height: 100svh; /* Better for mobile */
 }
 
 /* Premium Transitions */
@@ -90,13 +92,7 @@ html.lenis body {
   transition-duration: 300ms;
 }
 
-body {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* SHIMMER ANIMATION - KEY FOR "ALIVE" FEEL */
+/* SHIMMER ANIMATION */
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -124,18 +120,6 @@ body {
   animation: gradient 3s ease infinite;
 }
 
-/* Parallax Base */
-.parallax-container {
-  perspective: 1000px;
-  transform-style: preserve-3d;
-}
-
-.parallax-layer {
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
 /* Glass Effects */
 .glass {
   background: rgba(255, 255, 255, 0.1);
@@ -144,7 +128,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Custom Scrollbar - Logo Colors */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -186,7 +170,7 @@ body {
   box-shadow: 0 0 0 3px #DC2626;
 }
 
-/* Selection - Logo Colors */
+/* Selection */
 ::selection {
   background: rgba(220, 38, 38, 0.3);
   color: #0F172A;
@@ -209,6 +193,18 @@ video {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+/* Remove default margins that break snap */
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0;
+}
+
+/* Responsive viewport heights */
+@supports (height: 100svh) {
+  .snap-section {
+    min-height: 100svh;
+  }
 }
 
 /* Print */
