@@ -8,7 +8,6 @@ export { default as CustomCursor } from './layout/CustomCursor';
 // Section Components
 export { default as Hero } from './sections/Hero';
 export { default as Stats } from './sections/Stats';
-export { default as Announcements } from './sections/Announcements';
 export { default as CTA } from './sections/CTA';
 export { default as SectionHeader } from './sections/SectionHeader';
 

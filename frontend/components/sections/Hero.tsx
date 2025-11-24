@@ -1,10 +1,9 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
-import { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
+import { useRef } from 'react';
 
 interface HeroProps {
   title: string;
@@ -15,12 +14,6 @@ interface HeroProps {
   showScrollIndicator?: boolean;
 }
 
-const carouselImages = [
-  '/img1.png',
-  '/img2.png',
-  '/img3.png',
-];
-
 export default function Hero({
   title,
   subtitle,
@@ -30,25 +23,18 @@ export default function Hero({
   showScrollIndicator = true,
 }: HeroProps) {
   const containerRef = useRef<HTMLElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Parallax transforms
+  // Parallax transforms for different layers
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const orbsY = useTransform(scrollYProgress, [0, 1], ['0%', '70%']);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0]);
-
-  // Auto-play carousel
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, []);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
   const scrollToContent = () => {
     window.scrollTo({
@@ -61,42 +47,33 @@ export default function Hero({
     <section 
       ref={containerRef}
       data-scroll-section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-primary-50"
     >
-      {/* Carousel Background */}
-      <div className="absolute inset-0">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentIndex}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 1.5, ease: 'easeInOut' }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={carouselImages[currentIndex]}
-              alt={`Slide ${currentIndex + 1}`}
-              fill
-              className="object-cover"
-              priority={currentIndex === 0}
-              quality={100}
-            />
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-linear-to-br from-black/60 via-black/50 to-black/40" />
-            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent" />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* Animated Gradient Orbs */}
-      <motion.div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Multi-layer Parallax Background */}
+      <motion.div 
+        className="absolute inset-0"
+        style={{ y: backgroundY, scale }}
+      >
         <motion.div
-          className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.15 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070')] bg-cover bg-center"
+        />
+        <div className="absolute inset-0 bg-linear-to-br from-white/95 via-white/90 to-primary/20" />
+      </motion.div>
+      
+      {/* Animated background elements with parallax */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        style={{ y: orbsY }}
+      >
+        <motion.div
+          className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
           animate={{
-            x: [0, 100, 0],
-            y: [0, 50, 0],
-            scale: [1, 1.2, 1],
+            x: [0, 50, -20, 0],
+            y: [0, 30, -10, 0],
+            scale: [1, 1.1, 0.95, 1],
           }}
           transition={{
             duration: 20,
@@ -105,11 +82,11 @@ export default function Hero({
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 -right-20 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"
+          className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
           animate={{
-            x: [0, -80, 0],
-            y: [0, -40, 0],
-            scale: [1, 1.3, 1],
+            x: [0, -50, 20, 0],
+            y: [0, -30, 15, 0],
+            scale: [1, 1.2, 0.9, 1],
           }}
           transition={{
             duration: 25,
@@ -117,22 +94,45 @@ export default function Hero({
             ease: 'easeInOut',
           }}
         />
+        
+        {/* Additional floating orbs */}
         <motion.div
-          className="absolute top-1/2 left-1/3 w-64 h-64 bg-purple-500/10 rounded-full blur-2xl"
+          className="absolute top-1/2 left-1/3 w-64 h-64 bg-primary/10 rounded-full blur-2xl"
           animate={{
-            x: [0, 40, -20, 0],
-            y: [0, -30, 20, 0],
-            scale: [1, 1.15, 0.9, 1],
+            x: [0, 30, -30, 0],
+            y: [0, -40, 20, 0],
+            scale: [1, 1.15, 0.85, 1],
           }}
           transition={{
-            duration: 18,
+            duration: 15,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
         />
+        
+        {/* Subtle particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-accent/20 rounded-full"
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + i * 10}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 5 + i,
+              repeat: Infinity,
+              delay: i * 0.5,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
       </motion.div>
 
-      {/* Floating Content */}
       <motion.div 
         className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-32"
         style={{ y: contentY, opacity }}
@@ -155,8 +155,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl"
-            style={{ textShadow: '0 4px 20px rgba(0, 0, 0, 0.5), 0 2px 10px rgba(0, 0, 0, 0.3)' }}
+            className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight"
           >
             {title.split(' ').map((word, index) => (
               <motion.span
@@ -175,8 +174,7 @@ export default function Hero({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-lg md:text-xl text-white/95 mb-8 max-w-2xl leading-relaxed font-medium"
-            style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 0.5)' }}
+            className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl leading-relaxed"
           >
             {description}
           </motion.p>
@@ -191,10 +189,10 @@ export default function Hero({
               <motion.button
                 whileHover={{ 
                   scale: 1.05,
-                  boxShadow: '0 20px 40px rgba(230, 57, 70, 0.5)',
+                  boxShadow: '0 20px 40px rgba(230, 57, 70, 0.4)',
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="group relative bg-linear-to-r from-red-600 to-red-500 text-white px-8 py-4 rounded-lg font-bold shadow-2xl hover:shadow-3xl transition-all flex items-center justify-center space-x-2 overflow-hidden"
+                className="group relative bg-accent text-white px-8 py-4 rounded-lg font-semibold shadow-xl hover:shadow-2xl transition-all flex items-center justify-center space-x-2 overflow-hidden"
               >
                 <motion.div
                   className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
@@ -217,14 +215,15 @@ export default function Hero({
               <motion.button
                 whileHover={{ 
                   scale: 1.05,
-                  backgroundColor: 'rgba(255, 255, 255, 1)',
-                  borderColor: 'rgba(255, 255, 255, 1)',
+                  backgroundColor: '#003B73',
+                  color: '#ffffff',
+                  borderColor: '#003B73',
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative bg-white/90 backdrop-blur-sm text-gray-900 px-8 py-4 rounded-lg font-bold border-2 border-white/90 transition-all overflow-hidden shadow-xl"
+                className="relative bg-white text-primary px-8 py-4 rounded-lg font-semibold border-2 border-primary transition-all overflow-hidden"
               >
                 <motion.div
-                  className="absolute inset-0 bg-white"
+                  className="absolute inset-0 bg-primary"
                   initial={{ scale: 0, opacity: 0 }}
                   whileHover={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.3 }}
@@ -236,32 +235,13 @@ export default function Hero({
         </div>
       </motion.div>
 
-      {/* Carousel Indicators */}
-      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
-        {carouselImages.map((_, index) => (
-          <motion.button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-            className={`rounded-full transition-all ${
-              currentIndex === index 
-                ? 'bg-white w-12 h-3' 
-                : 'bg-white/50 w-3 h-3 hover:bg-white/80'
-            }`}
-            style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)' }}
-          />
-        ))}
-      </div>
-
       {showScrollIndicator && (
         <motion.button
           onClick={scrollToContent}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/80 hover:text-white transition-colors z-20"
-          style={{ textShadow: '0 2px 8px rgba(0, 0, 0, 0.5)' }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 hover:text-primary transition-colors z-20"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}

@@ -2,297 +2,206 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const navLinks = [
   { name: 'Home', path: '/' },
-  {
-    name: 'About Us',
-    path: '/about',
-    dropdown: [
-      { name: 'Overview', path: '/about/overview' },
-      { name: 'Our Approach', path: '/about/our-approach' },
-      { name: 'Management', path: '/about/management' },
-      { name: 'Success Stories', path: '/about/success-stories' },
-      { name: 'Retirement Consulting', path: '/about/retirement-consulting' },
-      { name: 'Benefit Consulting', path: '/about/benefit-consulting' },
-    ],
-  },
-  {
-    name: 'Services',
-    path: '/services',
-    dropdown: [
-      { name: 'Employee Benefits', path: '/services/employee-benefits' },
-      { name: 'Insurance Consulting', path: '/services/insurance-consulting' },
-    ],
-  },
-  {
-    name: 'Insights',
-    path: '/insights',
-    dropdown: [
-      { name: 'Research Reports', path: '/insights/research-reports' },
-      { name: 'Interest Rates', path: '/insights/interest-rates' },
-      { name: 'Regulatory Reports', path: '/insights/regulatory-reports' },
-    ],
-  },
+  { name: 'About Us', path: '/about' },
+  { name: 'Services', path: '/services' },
+  { name: 'Sectors', path: '/sectors' },
   { name: 'Contact', path: '/contact' },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const { scrollY } = useScroll();
-
+  
   const backgroundColor = useTransform(
     scrollY,
-    [0, 80],
-    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.95)']
+    [0, 100],
+    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.98)']
   );
-
-  const backdropBlur = useTransform(scrollY, [0, 80], ['blur(0px)', 'blur(16px)']);
+  
+  const backdropBlur = useTransform(
+    scrollY,
+    [0, 100],
+    ['blur(0px)', 'blur(12px)']
+  );
+  
+  const padding = useTransform(
+    scrollY,
+    [0, 100],
+    ['1.5rem', '1rem']
+  );
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const isActive = (path: string) => {
-    if (path === '/') return pathname === '/';
-    return pathname.startsWith(path);
-  };
 
   return (
     <motion.nav
       style={{
         backgroundColor,
         backdropFilter: backdropBlur,
+        paddingTop: padding,
+        paddingBottom: padding,
       }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'shadow-xl border-b border-gray-100' : ''
+      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
+        isScrolled ? 'shadow-lg border-b border-gray-200' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/">
             <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex items-center space-x-3"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center space-x-2"
             >
-              <div className="relative">
-                <div className="absolute inset-0 bg-linear-to-br from-blue-600 to-indigo-600 rounded-xl blur-md opacity-50" />
-                <div className="relative w-12 h-12 bg-linear-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-xl">UA</span>
-                </div>
+              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-xl">UA</span>
               </div>
-              <div className="hidden md:block">
-                <span className="font-bold text-xl bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  Universal Actuaries
-                </span>
-                <p className="text-xs text-gray-500 font-medium">Excellence in Actuarial Science</p>
-              </div>
+              <span className="font-bold text-xl text-primary hidden md:block">
+                Universal Actuaries
+              </span>
             </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-1">
+          <div className="hidden lg:flex items-center space-x-8">
             {navLinks.map((link, index) => (
-              <div
-                key={link.path}
-                className="relative"
-                onMouseEnter={() => link.dropdown && setActiveDropdown(link.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                {link.dropdown ? (
-                  <>
-                    <motion.button
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-1 ${
-                        isActive(link.path)
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                      }`}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <span>{link.name}</span>
-                      <ChevronDown
-                        className={`w-4 h-4 transition-transform ${
-                          activeDropdown === link.name ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </motion.button>
-
-                    <AnimatePresence>
-                      {activeDropdown === link.name && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden"
-                        >
-                          <div className="p-2">
-                            {link.dropdown.map((item, idx) => (
-                              <Link key={item.path} href={item.path}>
-                                <motion.div
-                                  initial={{ opacity: 0, x: -10 }}
-                                  animate={{ opacity: 1, x: 0 }}
-                                  transition={{ delay: idx * 0.05 }}
-                                  className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                                    pathname === item.path
-                                      ? 'bg-linear-to-r from-blue-50 to-indigo-50 text-blue-600'
-                                      : 'text-gray-700 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  {item.name}
-                                </motion.div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <Link href={link.path}>
+              <Link key={link.path} href={link.path}>
+                <motion.div
+                  className="relative py-2"
+                  whileHover="hover"
+                  initial="initial"
+                  animate="animate"
+                >
+                  <motion.span
+                    className={`text-sm font-medium transition-colors ${
+                      pathname === link.path
+                        ? 'text-primary'
+                        : 'text-gray-700 hover:text-primary'
+                    }`}
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                  >
+                    {link.name}
+                  </motion.span>
+                  {pathname === link.path && (
                     <motion.div
-                      className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                        isActive(link.path)
-                          ? 'text-blue-600 bg-blue-50'
-                          : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-                      }`}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      {link.name}
-                    </motion.div>
-                  </Link>
-                )}
-              </div>
+                      layoutId="navbar-indicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent origin-left rounded-full"
+                    initial={{ scaleX: 0 }}
+                    variants={{
+                      hover: { scaleX: pathname === link.path ? 0 : 1 },
+                      initial: { scaleX: 0 },
+                    }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                  />
+                  
+                  {/* Hover glow effect */}
+                  <motion.div
+                    className="absolute inset-0 bg-primary/5 rounded-lg -z-10"
+                    initial={{ scale: 0, opacity: 0 }}
+                    variants={{
+                      hover: { scale: 1.2, opacity: 1 },
+                      initial: { scale: 0, opacity: 0 },
+                    }}
+                    transition={{ duration: 0.2 }}
+                  />
+                </motion.div>
+              </Link>
             ))}
           </div>
 
+          {/* CTA Button */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
             className="hidden lg:block"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5 }}
           >
             <Link href="/contact">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
+              <motion.button 
+                className="relative bg-accent text-white px-6 py-2.5 rounded-lg font-medium shadow-lg overflow-hidden"
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: '0 10px 30px rgba(230, 57, 70, 0.4)',
+                }}
                 whileTap={{ scale: 0.95 }}
-                className="ml-4 px-6 py-2.5 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
               >
-                Get Started
+                <motion.div
+                  className="absolute inset-0 bg-white/20"
+                  initial={{ x: '-100%', skewX: -20 }}
+                  whileHover={{ x: '100%' }}
+                  transition={{ duration: 0.6 }}
+                />
+                <span className="relative z-10">Get Started</span>
               </motion.button>
             </Link>
           </motion.div>
 
           {/* Mobile Menu Button */}
-          <motion.button
-            whileTap={{ scale: 0.9 }}
+          <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="lg:hidden text-gray-700 hover:text-primary transition-colors"
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </motion.button>
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
-      </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-100 shadow-xl"
-          >
-            <div className="max-w-7xl mx-auto px-6 py-4 space-y-2">
-              {navLinks.map((link) => (
-                <div key={link.path}>
-                  {link.dropdown ? (
-                    <div className="space-y-1">
-                      <button
-                        onClick={() =>
-                          setActiveDropdown(activeDropdown === link.name ? null : link.name)
-                        }
-                        className="w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-50"
-                      >
-                        <span>{link.name}</span>
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform ${
-                            activeDropdown === link.name ? 'rotate-180' : ''
-                          }`}
-                        />
-                      </button>
-                      <AnimatePresence>
-                        {activeDropdown === link.name && (
-                          <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="pl-4 space-y-1"
-                          >
-                            {link.dropdown.map((item) => (
-                              <Link key={item.path} href={item.path}>
-                                <div
-                                  className={`px-4 py-2 rounded-lg text-sm ${
-                                    pathname === item.path
-                                      ? 'bg-blue-50 text-blue-600 font-medium'
-                                      : 'text-gray-600 hover:bg-gray-50'
-                                  }`}
-                                  onClick={() => setIsOpen(false)}
-                                >
-                                  {item.name}
-                                </div>
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link href={link.path}>
-                      <motion.div
-                        className={`px-4 py-3 rounded-lg text-sm font-semibold ${
-                          isActive(link.path)
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'text-gray-700 hover:bg-gray-50'
-                        }`}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {link.name}
-                      </motion.div>
-                    </Link>
-                  )}
-                </div>
-              ))}
-              <Link href="/contact">
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  className="w-full mt-4 px-6 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white text-sm font-semibold rounded-xl shadow-lg"
-                  onClick={() => setIsOpen(false)}
+        {/* Mobile Navigation */}
+        <motion.div
+          initial={false}
+          animate={{
+            height: isOpen ? 'auto' : 0,
+            opacity: isOpen ? 1 : 0,
+          }}
+          transition={{ duration: 0.3 }}
+          className="lg:hidden overflow-hidden"
+        >
+          <div className="py-6 space-y-4">
+            {navLinks.map((link) => (
+              <Link key={link.path} href={link.path} onClick={() => setIsOpen(false)}>
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  className={`block py-2 px-4 rounded-lg transition-colors ${
+                    pathname === link.path
+                      ? 'bg-primary text-white'
+                      : 'text-gray-700 hover:bg-gray-100'
+                  }`}
                 >
-                  Get Started
-                </motion.button>
+                  {link.name}
+                </motion.div>
               </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            ))}
+            <motion.div whileHover={{ scale: 1.02 }} className="pt-2">
+              <Link href="/contact">
+                <button className="w-full bg-accent text-white px-6 py-3 rounded-lg font-medium">
+                  Get Started
+                </button>
+              </Link>
+            </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </motion.nav>
   );
 }
