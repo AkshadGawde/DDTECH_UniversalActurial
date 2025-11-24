@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import SmoothScrollProvider from '@/components/animation/SmoothScrollProvider';
+import SmoothScrollProvider from '@/components/scroll/SmoothScrollProvider';
 import PageTransition from '@/components/animation/PageTransition';
 
 const geistSans = Geist({
@@ -19,21 +19,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Universal Actuaries | Leading Actuarial & Benefit Consulting Services',
   description:
-    'Premier actuarial and employee benefit consultancy firm providing comprehensive solutions across diverse sectors including insurance, healthcare, pensions, and corporate benefits.',
+    'Premier actuarial and employee benefit consultancy firm providing comprehensive solutions across diverse sectors.',
   keywords: [
     'actuarial services',
     'employee benefits',
     'benefit consulting',
     'insurance consulting',
-    'pension consulting',
-    'actuarial consulting',
   ],
-  authors: [{ name: 'Universal Actuaries' }],
-  openGraph: {
-    title: 'Universal Actuaries | Leading Actuarial Services',
-    description: 'Premier actuarial and employee benefit consultancy firm',
-    type: 'website',
-  },
 };
 
 export default function RootLayout({
@@ -44,12 +36,14 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-neutral-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-slate-900`}
       >
         <SmoothScrollProvider>
-          <Navbar />
-          <PageTransition>{children}</PageTransition>
-          <Footer />
+          <div className="snap-y snap-mandatory h-screen overflow-y-scroll">
+            <Navbar />
+            <PageTransition>{children}</PageTransition>
+            <Footer />
+          </div>
         </SmoothScrollProvider>
       </body>
     </html>

@@ -1,173 +1,126 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const navLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'About Us', path: '/about' },
-  { name: 'Services', path: '/services' },
-  { name: 'Sectors', path: '/sectors' },
-  { name: 'Contact', path: '/contact' },
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Services', href: '/services' },
+  { name: 'Sectors', href: '/sectors' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
   const { scrollY } = useScroll();
-  
+
   const backgroundColor = useTransform(
     scrollY,
     [0, 100],
-    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.98)']
+    ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0.95)']
   );
-  
-  const backdropBlur = useTransform(
-    scrollY,
-    [0, 100],
-    ['blur(0px)', 'blur(12px)']
-  );
-  
-  const padding = useTransform(
-    scrollY,
-    [0, 100],
-    ['1.5rem', '1rem']
-  );
+
+  const borderOpacity = useTransform(scrollY, [0, 100], [0, 0.1]);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <motion.nav
-      style={{
-        backgroundColor,
-        backdropFilter: backdropBlur,
-        paddingTop: padding,
-        paddingBottom: padding,
-      }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-shadow duration-300 ${
-        isScrolled ? 'shadow-lg border-b border-gray-200' : ''
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center space-x-2"
-            >
-              <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">UA</span>
+    <>
+      <motion.nav
+        style={{
+          backgroundColor,
+          borderBottom: `1px solid rgba(30, 58, 138, ${borderOpacity})`,
+        }}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled ? 'backdrop-blur-lg shadow-premium' : ''
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative w-12 h-12"
+              >
+                <Image
+                  src="/Logo.png"
+                  alt="Universal Actuaries"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </motion.div>
+              <div className="hidden md:block">
+                <div className="text-xl font-bold text-primary-600 group-hover:text-primary-700 transition-colors">
+                  Universal Actuaries
+                </div>
+                <div className="text-xs text-neutral-500">Benefit Consulting</div>
               </div>
-              <span className="font-bold text-xl text-primary hidden md:block">
-                Universal Actuaries
-              </span>
-            </motion.div>
-          </Link>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link, index) => (
-              <Link key={link.path} href={link.path}>
-                <motion.div
-                  className="relative py-2"
-                  whileHover="hover"
-                  initial="initial"
-                  animate="animate"
-                >
-                  <motion.span
-                    className={`text-sm font-medium transition-colors ${
-                      pathname === link.path
-                        ? 'text-primary'
-                        : 'text-gray-700 hover:text-primary'
-                    }`}
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 + index * 0.05 }}
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href}>
+                  <motion.div
+                    className="relative py-2 text-neutral-700 hover:text-primary-600 font-medium transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {link.name}
-                  </motion.span>
-                  {pathname === link.path && (
-                    <motion.div
-                      layoutId="navbar-indicator"
-                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <motion.div
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent origin-left rounded-full"
-                    initial={{ scaleX: 0 }}
-                    variants={{
-                      hover: { scaleX: pathname === link.path ? 0 : 1 },
-                      initial: { scaleX: 0 },
-                    }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                  />
-                  
-                  {/* Hover glow effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-primary/5 rounded-lg -z-10"
-                    initial={{ scale: 0, opacity: 0 }}
-                    variants={{
-                      hover: { scale: 1.2, opacity: 1 },
-                      initial: { scale: 0, opacity: 0 },
-                    }}
-                    transition={{ duration: 0.2 }}
-                  />
-                </motion.div>
+                    {pathname === link.href && (
+                      <motion.div
+                        layoutId="navbar-indicator"
+                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-500"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className="hidden md:block">
+              <Link href="/contact">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-6 py-3 bg-accent-500 hover:bg-accent-600 text-white rounded-full font-semibold transition-all duration-300 shadow-glow-accent"
+                >
+                  Get Started
+                </motion.button>
               </Link>
-            ))}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden p-2 rounded-lg text-neutral-700 hover:bg-neutral-100 transition-colors"
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </motion.button>
           </div>
-
-          {/* CTA Button */}
-          <motion.div
-            className="hidden lg:block"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Link href="/contact">
-              <motion.button 
-                className="relative bg-accent text-white px-6 py-2.5 rounded-lg font-medium shadow-lg overflow-hidden"
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: '0 10px 30px rgba(230, 57, 70, 0.4)',
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  initial={{ x: '-100%', skewX: -20 }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10">Get Started</span>
-              </motion.button>
-            </Link>
-          </motion.div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-gray-700 hover:text-primary transition-colors"
-          >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Menu */}
         <motion.div
           initial={false}
           animate={{
@@ -175,33 +128,45 @@ export default function Navbar() {
             opacity: isOpen ? 1 : 0,
           }}
           transition={{ duration: 0.3 }}
-          className="lg:hidden overflow-hidden"
+          className="md:hidden overflow-hidden bg-white/95 backdrop-blur-lg border-t border-neutral-200"
         >
-          <div className="py-6 space-y-4">
-            {navLinks.map((link) => (
-              <Link key={link.path} href={link.path} onClick={() => setIsOpen(false)}>
-                <motion.div
-                  whileHover={{ x: 5 }}
-                  className={`block py-2 px-4 rounded-lg transition-colors ${
-                    pathname === link.path
-                      ? 'bg-primary text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+          <div className="px-4 py-6 space-y-4">
+            {navLinks.map((link, index) => (
+              <motion.div
+                key={link.href}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : -20 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Link
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`block py-3 px-4 rounded-lg font-medium transition-colors ${
+                    pathname === link.href
+                      ? 'bg-primary-50 text-primary-600'
+                      : 'text-neutral-700 hover:bg-neutral-50'
                   }`}
                 >
                   {link.name}
-                </motion.div>
-              </Link>
+                </Link>
+              </motion.div>
             ))}
-            <motion.div whileHover={{ scale: 1.02 }} className="pt-2">
-              <Link href="/contact">
-                <button className="w-full bg-accent text-white px-6 py-3 rounded-lg font-medium">
-                  Get Started
-                </button>
-              </Link>
-            </motion.div>
+            <Link href="/contact" onClick={() => setIsOpen(false)}>
+              <motion.button
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: isOpen ? 1 : 0, y: isOpen ? 0 : 20 }}
+                transition={{ delay: 0.4 }}
+                className="w-full px-6 py-3 bg-accent-500 text-white rounded-full font-semibold"
+              >
+                Get Started
+              </motion.button>
+            </Link>
           </div>
         </motion.div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+
+      {/* Spacer to prevent content jump */}
+      <div className="h-20" />
+    </>
   );
 }

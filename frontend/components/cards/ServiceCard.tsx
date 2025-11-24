@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from 'framer-motion';
-import { LucideIcon } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import { LucideIcon, ArrowRight } from 'lucide-react';
+import { useRef } from 'react';
 import Link from 'next/link';
 
 interface ServiceCardProps {
@@ -20,162 +20,69 @@ export default function ServiceCard({
   link = '/services',
   delay = 0,
 }: ServiceCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['7.5deg', '-7.5deg']);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-7.5deg', '7.5deg']);
-
-  // Parallax scroll effect
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  const cardY = useTransform(scrollYProgress, [0, 1], ['20%', '-20%']);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    setIsHovered(false);
-  };
+  const cardRef = useRef<HTMLDivElement>(null);
 
   return (
     <Link href={link}>
       <motion.div
-        ref={ref}
-        initial={{ opacity: 0, y: 50 }}
+        ref={cardRef}
+        initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ 
-          duration: 0.6, 
+        viewport={{ once: true, margin: '-50px' }}
+        transition={{
+          duration: 0.6,
           delay,
-          type: 'spring',
-          stiffness: 100,
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          rotateX,
-          rotateY,
-          y: cardY,
-          transformStyle: 'preserve-3d',
+          ease: [0.25, 0.1, 0.25, 1],
         }}
         whileHover={{
-          y: -10,
-          transition: { duration: 0.3 },
+          y: -8,
+          transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
         }}
-        className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 cursor-pointer"
+        className="group relative bg-white rounded-2xl p-8 h-full cursor-pointer overflow-hidden border border-slate-200 hover:border-[#1E3A8A]/20 transition-all duration-500 shadow-sm hover:shadow-xl"
       >
-        {/* Gradient overlay on hover */}
+        {/* Subtle gradient on hover */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 0.08 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="absolute inset-0 bg-linear-to-br from-primary to-accent rounded-2xl"
+          whileHover={{ opacity: 0.03 }}
+          transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+          className="absolute inset-0 bg-gradient-to-br from-[#1E3A8A] to-[#DC2626]"
         />
 
-        {/* Animated border */}
+        {/* Icon container */}
         <motion.div
-          className="absolute inset-0 rounded-2xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{
-            background: 'linear-gradient(135deg, rgba(0,59,115,0.3), rgba(230,57,70,0.3))',
-            padding: '2px',
-            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-            WebkitMaskComposite: 'xor',
-            maskComposite: 'exclude',
-          }}
-        />
+          whileHover={{ scale: 1.05 }}
+          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+          className="relative w-16 h-16 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow duration-300"
+        >
+          <Icon className="w-8 h-8 text-white" />
+        </motion.div>
 
-        <div className="relative" style={{ transform: 'translateZ(50px)' }}>
-          {/* Icon */}
-          <motion.div
-            animate={{
-              rotate: isHovered ? [0, -5, 5, 0] : 0,
-            }}
-            transition={{ duration: 0.5 }}
-            className="w-16 h-16 bg-linear-to-br from-primary to-accent rounded-xl flex items-center justify-center mb-6 shadow-lg relative overflow-hidden"
-          >
-            <motion.div
-              className="absolute inset-0 bg-white/20"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: isHovered ? 2 : 0, opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.4 }}
-            />
-            <Icon size={32} className="text-white relative z-10" />
-          </motion.div>
-
-          {/* Content */}
-          <h3 className="text-2xl font-bold text-primary mb-3 group-hover:text-accent transition-colors">
+        {/* Content */}
+        <div className="relative space-y-4">
+          {/* Title */}
+          <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#1E3A8A] transition-colors duration-300">
             {title}
           </h3>
-          <p className="text-gray-600 leading-relaxed mb-4">{description}</p>
 
-          {/* Arrow indicator */}
+          {/* Description */}
+          <p className="text-slate-600 leading-relaxed">
+            {description}
+          </p>
+
+          {/* CTA */}
           <motion.div
             initial={{ x: 0 }}
-            animate={{ x: isHovered ? 10 : 0 }}
-            className="flex items-center text-accent font-medium"
+            whileHover={{ x: 4 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex items-center gap-2 text-[#DC2626] font-semibold text-base pt-2"
           >
-            <span className="text-sm">Learn more</span>
-            <motion.svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 ml-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              animate={{
-                x: isHovered ? [0, 5, 0] : 0,
-              }}
-              transition={{
-                duration: 0.8,
-                repeat: isHovered ? Infinity : 0,
-              }}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </motion.svg>
+            <span>Learn more</span>
+            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </motion.div>
         </div>
 
-        {/* Shine effect */}
-        <motion.div
-          initial={{ x: '-100%' }}
-          animate={{ x: isHovered ? '100%' : '-100%' }}
-          transition={{ duration: 0.8, ease: 'easeInOut' }}
-          className="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent rounded-2xl"
-          style={{ transform: 'translateZ(0)' }}
-        />
+        {/* Corner accent - subtle */}
+        <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </motion.div>
     </Link>
   );

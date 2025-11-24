@@ -1,7 +1,8 @@
 'use client';
 
-import { motion, useInView, useSpring, useTransform, useScroll } from 'framer-motion';
+import { motion, useInView, useSpring } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { TrendingUp, Users, Award, Target } from 'lucide-react';
 
 interface Stat {
   value: number;
@@ -18,8 +19,7 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: Stat) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [displayValue, setDisplayValue] = useState(0);
-
-  const spring = useSpring(0, { stiffness: 50, damping: 20 });
+  const spring = useSpring(0, { stiffness: 60, damping: 30 });
 
   useEffect(() => {
     if (isInView) {
@@ -31,12 +31,11 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: Stat) {
     const unsubscribe = spring.on('change', (latest) => {
       setDisplayValue(Math.floor(latest));
     });
-
     return () => unsubscribe();
   }, [spring]);
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="stats-number">
       {prefix}
       {displayValue}
       {suffix}
@@ -44,92 +43,83 @@ function AnimatedNumber({ value, suffix = '', prefix = '' }: Stat) {
   );
 }
 
+const iconMap = [TrendingUp, Users, Award, Target];
+
 export default function Stats({ stats }: StatsProps) {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  const cardsY = useTransform(scrollYProgress, [0, 1], ['0%', '-10%']);
-
   return (
-    <section ref={sectionRef} data-scroll-section className="section-padding bg-white relative overflow-hidden">
-      {/* Background decoration with parallax */}
-      <motion.div 
-        className="absolute inset-0 opacity-5"
-        style={{ y: backgroundY }}
-      >
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-primary rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-accent rounded-full blur-3xl" />
-      </motion.div>
-      
-      <motion.div 
-        className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12 relative"
-        style={{ y: cardsY }}
-      >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30, scale: 0.8 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ 
-                duration: 0.6, 
-                delay: index * 0.1,
-                type: 'spring',
-                stiffness: 100,
-              }}
-              whileHover={{ 
-                scale: 1.05,
-                y: -5,
-              }}
-              className="text-center relative group"
-            >
-              {/* Animated background circle */}
+    <section className="relative py-20 overflow-hidden bg-gradient-to-b from-slate-50 to-white">
+      {/* Subtle background */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E3A8A] rounded-full blur-[120px] opacity-10" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#DC2626] rounded-full blur-[120px] opacity-8" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+            Proven Excellence
+          </h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Trusted by leading organizations worldwide
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => {
+            const IconComponent = iconMap[index % iconMap.length];
+            return (
               <motion.div
-                className="absolute inset-0 bg-linear-to-br from-primary/5 to-accent/5 rounded-2xl -z-10"
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-              />
-              
-              {/* Glow effect on hover */}
-              <motion.div
-                className="absolute inset-0 bg-linear-to-br from-primary/10 to-accent/10 rounded-2xl blur-xl -z-20"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-              
-              <div className="p-6">
-                <motion.div 
-                  className="text-4xl md:text-5xl font-bold text-primary mb-2"
-                  whileHover={{
-                    scale: 1.1,
-                    color: '#E63946',
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <AnimatedNumber {...stat} />
-                </motion.div>
-                <motion.div 
-                  className="text-sm md:text-base text-gray-600 font-medium"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 + 0.4 }}
-                >
-                  {stat.label}
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                whileHover={{
+                  y: -6,
+                  transition: { duration: 0.3, ease: [0.25, 0.1, 0.25, 1] },
+                }}
+                className="group relative"
+              >
+                {/* Card */}
+                <div className="relative bg-white rounded-2xl p-8 text-center h-full shadow-sm hover:shadow-lg transition-shadow duration-500 border border-slate-200">
+
+                  {/* Icon */}
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                    className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl shadow-md mb-6"
+                  >
+                    <IconComponent className="w-8 h-8 text-white" />
+                  </motion.div>
+
+                  {/* Number */}
+                  <div className="text-5xl md:text-6xl font-bold text-slate-900 mb-3">
+                    <AnimatedNumber {...stat} />
+                  </div>
+
+                  {/* Label */}
+                  <div className="text-sm font-semibold text-slate-600 uppercase tracking-wider">
+                    {stat.label}
+                  </div>
+
+                  {/* Subtle accent */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

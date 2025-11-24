@@ -22,235 +22,219 @@ export default function Hero({
   ctaLink = '/contact',
   showScrollIndicator = true,
 }: HeroProps) {
-  const containerRef = useRef<HTMLElement>(null);
-  
+  const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   });
 
-  // Parallax transforms for different layers
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
-  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const orbsY = useTransform(scrollYProgress, [0, 1], ['0%', '70%']);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.8, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
-
-  const scrollToContent = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth',
-    });
-  };
+  // Subtle parallax - premium feel
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+  const opacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 0.7, 0]);
 
   return (
-    <section 
+    <section
       ref={containerRef}
-      data-scroll-section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-br from-gray-50 via-white to-primary-50"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1a2f5a] via-[#15264a] to-[#0f1b3a]"
     >
-      {/* Multi-layer Parallax Background */}
-      <motion.div 
+      {/* Subtle gradient layers - muted but elegant */}
+      <motion.div
+        style={{ y: backgroundY }}
         className="absolute inset-0"
-        style={{ y: backgroundY, scale }}
       >
-        <motion.div
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.15 }}
-          transition={{ duration: 1.5 }}
-          className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070')] bg-cover bg-center"
-        />
-        <div className="absolute inset-0 bg-linear-to-br from-white/95 via-white/90 to-primary/20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(30,58,138,0.15)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(220,38,38,0.08)_0%,transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,184,166,0.06)_0%,transparent_60%)]" />
       </motion.div>
-      
-      {/* Animated background elements with parallax */}
-      <motion.div 
-        className="absolute inset-0 overflow-hidden"
-        style={{ y: orbsY }}
-      >
+
+      {/* Subtle floating orbs - MUTED colors */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Navy orb - subtle */}
         <motion.div
-          className="absolute top-1/4 -left-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
           animate={{
-            x: [0, 50, -20, 0],
-            y: [0, 30, -10, 0],
-            scale: [1, 1.1, 0.95, 1],
+            x: [0, 30, 0],
+            y: [0, -40, 0],
           }}
           transition={{
             duration: 20,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
+          className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#1E3A8A] rounded-full blur-[120px] opacity-10"
         />
+
+        {/* Red orb - very subtle accent */}
         <motion.div
-          className="absolute bottom-1/4 -right-20 w-96 h-96 bg-accent/5 rounded-full blur-3xl"
           animate={{
-            x: [0, -50, 20, 0],
-            y: [0, -30, 15, 0],
-            scale: [1, 1.2, 0.9, 1],
+            x: [0, -30, 0],
+            y: [0, 40, 0],
           }}
           transition={{
             duration: 25,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
+          className="absolute bottom-1/4 right-1/4 w-[350px] h-[350px] bg-[#DC2626] rounded-full blur-[100px] opacity-8"
         />
-        
-        {/* Additional floating orbs */}
-        <motion.div
-          className="absolute top-1/2 left-1/3 w-64 h-64 bg-primary/10 rounded-full blur-2xl"
-          animate={{
-            x: [0, 30, -30, 0],
-            y: [0, -40, 20, 0],
-            scale: [1, 1.15, 0.85, 1],
-          }}
-          transition={{
-            duration: 15,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-        
-        {/* Subtle particles */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-accent/20 rounded-full"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + i * 10}%`,
-            }}
-            animate={{
-              y: [0, -100, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 5 + i,
-              repeat: Infinity,
-              delay: i * 0.5,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
-      </motion.div>
 
-      <motion.div 
-        className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12 py-32"
+        {/* Grid overlay - premium */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] opacity-30" />
+      </div>
+
+      {/* Content - clean and professional */}
+      <motion.div
         style={{ y: contentY, opacity }}
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
       >
-        <div className="max-w-4xl">
+        <div className="space-y-8">
+          {/* Subtitle - understated gold */}
           {subtitle && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-6"
+              transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <span className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium">
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border border-[#C2964B]/20 text-[#C2964B] text-sm font-medium backdrop-blur-sm">
                 {subtitle}
               </span>
             </motion.div>
           )}
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 leading-tight"
-          >
-            {title.split(' ').map((word, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                className="inline-block mr-3"
-              >
-                {word}
-              </motion.span>
-            ))}
-          </motion.h1>
+          {/* Main Title - elegant reveal */}
+          <motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+              className="text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-tight tracking-tight"
+            >
+              {title.split(' ').map((word, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.3 + index * 0.1,
+                    ease: [0.25, 0.1, 0.25, 1],
+                  }}
+                  className="inline-block mr-4"
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h1>
+          </motion.div>
 
+          {/* Description - refined */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="text-xl md:text-2xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light"
           >
             {description}
           </motion.p>
 
+          {/* CTA Buttons - elegant hover states */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1 }}
-            className="flex flex-col sm:flex-row gap-4"
+            transition={{ duration: 0.8, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
           >
             <Link href={ctaLink}>
               <motion.button
-                whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: '0 20px 40px rgba(230, 57, 70, 0.4)',
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="group relative bg-accent text-white px-8 py-4 rounded-lg font-semibold shadow-xl hover:shadow-2xl transition-all flex items-center justify-center space-x-2 overflow-hidden"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                className="group relative px-8 py-4 bg-[#DC2626] text-white rounded-lg font-semibold text-lg overflow-hidden"
               >
+                <span className="relative z-10 flex items-center gap-2">
+                  {ctaText}
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+
+                {/* Subtle gradient overlay on hover */}
                 <motion.div
-                  className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent"
-                  initial={{ x: '-100%' }}
-                  whileHover={{ x: '100%' }}
-                  transition={{ duration: 0.6 }}
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="absolute inset-0 bg-gradient-to-r from-[#DC2626] to-[#B91C1C]"
                 />
-                <span className="relative z-10">{ctaText}</span>
-                <motion.div
-                  className="relative z-10"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
-                >
-                  <ArrowRight size={20} />
-                </motion.div>
               </motion.button>
             </Link>
 
             <Link href="/services">
               <motion.button
-                whileHover={{ 
-                  scale: 1.05,
-                  backgroundColor: '#003B73',
-                  color: '#ffffff',
-                  borderColor: '#003B73',
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="relative bg-white text-primary px-8 py-4 rounded-lg font-semibold border-2 border-primary transition-all overflow-hidden"
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-lg font-semibold text-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300"
               >
-                <motion.div
-                  className="absolute inset-0 bg-primary"
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileHover={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="relative z-10">Our Services</span>
+                View Services
               </motion.button>
             </Link>
+          </motion.div>
+
+          {/* Stats Row - minimal and elegant */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+            className="grid grid-cols-3 gap-8 max-w-3xl mx-auto mt-20 pt-12 border-t border-white/10"
+          >
+            {[
+              { value: '25+', label: 'Years Experience' },
+              { value: '500+', label: 'Clients Served' },
+              { value: '99%', label: 'Satisfaction' },
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  duration: 0.6,
+                  delay: 1.2 + index * 0.1,
+                  ease: [0.25, 0.1, 0.25, 1],
+                }}
+                whileHover={{ y: -4 }}
+                className="text-center cursor-default"
+              >
+                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-white/50 font-medium uppercase tracking-wider">
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </motion.div>
 
+      {/* Scroll Indicator - minimal */}
       {showScrollIndicator && (
-        <motion.button
-          onClick={scrollToContent}
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.6 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 hover:text-primary transition-colors z-20"
+          transition={{ duration: 1, delay: 1.5 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
+            animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="flex flex-col items-center gap-2 text-white/40 hover:text-white/70 transition-colors cursor-pointer"
           >
-            <ChevronDown size={32} />
+            <span className="text-xs font-medium tracking-widest uppercase">Scroll</span>
+            <ChevronDown className="w-5 h-5" />
           </motion.div>
-        </motion.button>
+        </motion.div>
       )}
+
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10" />
     </section>
   );
 }
