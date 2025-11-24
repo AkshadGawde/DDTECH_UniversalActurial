@@ -1,3 +1,4 @@
+/* Tailwind v4 entrypoint */
 @import "tailwindcss";
 
 /* Removed unsupported @custom-variant rule to satisfy PostCSS/Tailwind lint */
