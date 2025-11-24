@@ -1,5 +1,7 @@
-/* Tailwind v4 entrypoint */
-@import "tailwindcss";
+/* Tailwind v3 directives for compatibility */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* Removed unsupported @custom-variant rule to satisfy PostCSS/Tailwind lint */
 
