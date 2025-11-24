@@ -1,9 +1,9 @@
 'use client';
 
-import Hero from '@/components/Hero';
-import SectionHeader from '@/components/SectionHeader';
-import AnimatedSection from '@/components/AnimatedSection';
-import CTA from '@/components/CTA';
+import Hero from '@/components/sections/Hero';
+import SectionHeader from '@/components/sections/SectionHeader';
+import AnimatedSection from '@/components/animation/AnimatedSection';
+import CTA from '@/components/sections/CTA';
 import { motion } from 'framer-motion';
 import { Award, Target, Eye, Users2 } from 'lucide-react';
 

@@ -1,10 +1,10 @@
 'use client';
 
-import Hero from '@/components/Hero';
-import SectionHeader from '@/components/SectionHeader';
-import SectorCard from '@/components/SectorCard';
-import AnimatedSection from '@/components/AnimatedSection';
-import CTA from '@/components/CTA';
+import Hero from '@/components/sections/Hero';
+import SectionHeader from '@/components/sections/SectionHeader';
+import SectorCard from '@/components/cards/SectorCard';
+import AnimatedSection from '@/components/animation/AnimatedSection';
+import CTA from '@/components/sections/CTA';
 import { 
   Building2, 
   Factory, 

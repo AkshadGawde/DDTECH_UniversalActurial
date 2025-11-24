@@ -1,10 +1,10 @@
 'use client';
 
-import Hero from '@/components/Hero';
-import SectionHeader from '@/components/SectionHeader';
-import ServiceCard from '@/components/ServiceCard';
-import AnimatedSection from '@/components/AnimatedSection';
-import CTA from '@/components/CTA';
+import Hero from '@/components/sections/Hero';
+import SectionHeader from '@/components/sections/SectionHeader';
+import ServiceCard from '@/components/cards/ServiceCard';
+import AnimatedSection from '@/components/animation/AnimatedSection';
+import CTA from '@/components/sections/CTA';
 import { 
   Calculator, 
   Shield, 

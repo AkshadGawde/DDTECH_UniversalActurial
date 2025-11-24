@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Hero from '@/components/Hero';
-import SectionHeader from '@/components/SectionHeader';
-import AnimatedSection from '@/components/AnimatedSection';
+import Hero from '@/components/sections/Hero';
+import SectionHeader from '@/components/sections/SectionHeader';
+import AnimatedSection from '@/components/animation/AnimatedSection';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, Send, Linkedin, Twitter, Facebook } from 'lucide-react';
 

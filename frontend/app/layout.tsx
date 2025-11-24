@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import SmoothScrollProvider from "@/components/SmoothScrollProvider";
-import PageTransition from "@/components/PageTransition";
-import ParallaxProvider from "@/components/ParallaxProvider";
-import EnhancedScrollIndicator from "@/components/EnhancedScrollIndicator";
-import CustomCursor from "@/components/CustomCursor";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import SmoothScrollProvider from "@/components/animation/SmoothScrollProvider";
+import PageTransition from "@/components/animation/PageTransition";
+import ParallaxProvider from "@/components/scroll/ParallaxProvider";
+import EnhancedScrollIndicator from "@/components/scroll/EnhancedScrollIndicator";
+import CustomCursor from "@/components/layout/CustomCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
