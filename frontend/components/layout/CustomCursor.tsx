@@ -55,7 +55,7 @@ export default function CustomCursor() {
     <>
       {/* Main cursor */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference hidden lg:block"
+  className="fixed top-0 left-0 pointer-events-none z-9999 mix-blend-difference hidden lg:block"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -86,7 +86,7 @@ export default function CustomCursor() {
 
       {/* Cursor trail */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference hidden lg:block"
+  className="fixed top-0 left-0 pointer-events-none z-9998 mix-blend-difference hidden lg:block"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,

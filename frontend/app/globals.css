@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+/* Removed unsupported @custom-variant rule to satisfy PostCSS/Tailwind lint */
 
 :root {
   /* Logo-matched CSS Variables */

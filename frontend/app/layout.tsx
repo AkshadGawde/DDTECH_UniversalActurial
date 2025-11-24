@@ -8,6 +8,7 @@ import PageTransition from "@/components/animation/PageTransition";
 import ParallaxProvider from "@/components/scroll/ParallaxProvider";
 import EnhancedScrollIndicator from "@/components/scroll/EnhancedScrollIndicator";
 import CustomCursor from "@/components/CustomCursor";
+import LoadingScreen from "@/components/layout/LoadingScreen";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <LoadingScreen />
         <SmoothScrollProvider>
           <CustomCursor />
           <Navbar />

@@ -3,7 +3,7 @@
 import Hero from '@/components/sections/Hero';
 import SectionHeader from '@/components/sections/SectionHeader';
 import AnimatedSection from '@/components/animation/AnimatedSection';
-import CTA from '@/components/sections/CTA';
+import CTASection from '@/components/sections/CTASection';
 import { motion } from 'framer-motion';
 import { Award, Target, Eye, Users2 } from 'lucide-react';
 
@@ -118,11 +118,11 @@ export default function About() {
                   </p>
                   <p>
                     Our journey has been marked by unwavering commitment to excellence, continuous innovation, 
-                    and deep partnerships with our clients. We've helped hundreds of organizations navigate 
+                    and deep partnerships with our clients. We&apos;ve helped hundreds of organizations navigate 
                     complex actuarial challenges and design benefit programs that truly make a difference.
                   </p>
                   <p>
-                    Today, we're proud to be recognized as one of the leading actuarial consulting firms, 
+                    Today, we&apos;re proud to be recognized as one of the leading actuarial consulting firms, 
                     trusted by corporations, financial institutions, and government organizations alike.
                   </p>
                 </div>
@@ -178,7 +178,7 @@ export default function About() {
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent to-primary" />
+            <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-linear-to-b from-primary via-accent to-primary" />
 
             {timeline.map((item, index) => (
               <AnimatedSection
@@ -272,9 +272,9 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <CTA
+      <CTASection
         title="Join Us on Our Journey"
-        description="Whether you're looking for expert consulting or exploring career opportunities, we'd love to hear from you."
+        description="Whether you&apos;re looking for expert consulting or exploring career opportunities, we&apos;d love to hear from you."
         primaryButtonText="Get in Touch"
         primaryButtonLink="/contact"
         secondaryButtonText="View Careers"

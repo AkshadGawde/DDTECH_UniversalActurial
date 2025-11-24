@@ -47,11 +47,11 @@ const iconMap = [TrendingUp, Users, Award, Target];
 
 export default function Stats({ stats }: StatsProps) {
   return (
-    <section className="relative w-full py-20 overflow-hidden bg-white">
+    <section className="relative w-full py-20 overflow-hidden bg-gradient-to-b from-slate-50 to-white">
       {/* Subtle background */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E3A8A] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#DC2626] rounded-full blur-[120px]" />
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E3A8A] rounded-full blur-[120px] opacity-10" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#DC2626] rounded-full blur-[120px] opacity-8" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -97,14 +97,14 @@ export default function Stats({ stats }: StatsProps) {
                   <motion.div
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 0.1 }}
-                    className="absolute inset-0 bg-linear-to-br from-[#1E3A8A] to-[#DC2626] rounded-2xl"
+                    className="absolute inset-0 bg-gradient-to-br from-[#1E3A8A] to-[#DC2626] rounded-2xl"
                   />
 
                   {/* Icon */}
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                    className="relative inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-[#1E3A8A] to-[#172554] rounded-xl shadow-md mb-6 mx-auto"
+                    className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl shadow-md mb-6 mx-auto"
                   >
                     <IconComponent className="w-8 h-8 text-white" />
                   </motion.div>
@@ -120,7 +120,7 @@ export default function Stats({ stats }: StatsProps) {
                   </div>
 
                   {/* Subtle accent */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-linear-to-br from-[#DC2626]/5 to-transparent rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
               </motion.div>
             );

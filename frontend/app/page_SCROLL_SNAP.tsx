@@ -72,7 +72,7 @@ export default function Home() {
                 key={index}
                 className="flex flex-col items-center gap-3 p-6 hover:bg-slate-50 rounded-xl transition-colors"
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center">
+                <div className="w-16 h-16 bg-linear-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center">
                   <badge.icon className="w-8 h-8 text-white" />
                 </div>
                 <span className="text-sm font-semibold text-slate-700">
@@ -85,7 +85,7 @@ export default function Home() {
       </section>
 
       {/* Section 4: Services - SNAP */}
-      <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-gradient-to-b from-slate-50 to-white">
+  <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-linear-to-b from-slate-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
@@ -130,7 +130,7 @@ export default function Home() {
       </section>
 
       {/* Section 5: Why Choose Us - SNAP */}
-      <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-gradient-to-br from-[#1a2f5a] via-[#15264a] to-[#0f1b3a] text-white relative overflow-hidden">
+  <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-linear-to-br from-[#1a2f5a] via-[#15264a] to-[#0f1b3a] text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,rgba(30,58,138,0.3)_0%,transparent_50%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(220,38,38,0.2)_0%,transparent_50%)]" />
@@ -183,7 +183,7 @@ export default function Home() {
                   key={index}
                   className="flex gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-300"
                 >
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="w-12 h-12 bg-[#DC2626] rounded-lg flex items-center justify-center">
                       <feature.icon className="w-6 h-6 text-white" />
                     </div>
@@ -200,7 +200,7 @@ export default function Home() {
       </section>
 
       {/* Section 6: Sectors - SNAP */}
-      <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-gradient-to-b from-white to-slate-50">
+  <section className="snap-start snap-always py-24 min-h-screen flex items-center bg-linear-to-b from-white to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">

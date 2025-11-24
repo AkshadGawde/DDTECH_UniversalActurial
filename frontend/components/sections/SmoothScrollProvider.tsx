@@ -12,13 +12,13 @@ export default function SmoothScrollProvider({ children }: SmoothScrollProviderP
     <ReactLenis
       root
       options={{
+        // Lenis v1+ recommended minimal config
         lerp: 0.1,
         duration: 1.2,
         smoothWheel: true,
-        smoothTouch: false,
+        // Removed unsupported smoothTouch option per LenisOptions typings
         wheelMultiplier: 1,
-        touchMultiplier: 2,
-        infinite: false,
+        touchMultiplier: 1.5,
         orientation: 'vertical',
       }}
     >

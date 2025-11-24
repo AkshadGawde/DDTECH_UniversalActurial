@@ -102,22 +102,15 @@ export default function Home() {
       {/* Stats Section */}
       <Stats stats={stats} />
 
-      {/* Services Section - Blue Theme */}
-      <section data-scroll-section className="section-padding bg-[#1E3A8A] overflow-hidden relative">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-white rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-red-500 rounded-full blur-[120px]" />
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
+      {/* Services Section */}
+      <section data-scroll-section className="section-padding bg-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <ScrollReveal direction="up" distance={60}>
             <SectionHeader
               subtitle="What We Offer"
               title="Our Core Services"
               description="Comprehensive actuarial and consulting services designed to meet your unique business needs."
               centered={true}
-              theme="dark"
             />
           </ScrollReveal>
           
@@ -153,7 +146,6 @@ export default function Home() {
             title="Sectors We Specialize In"
             description="Providing tailored solutions across multiple industries with deep domain expertise."
             centered={true}
-            theme="light"
           />
           
           {/* Centered container for sectors */}
@@ -174,21 +166,14 @@ export default function Home() {
       </section>
 
       {/* Visual Showcase Section */}
-      <section data-scroll-section className="section-padding bg-[#1E3A8A] relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-white rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500 rounded-full blur-[120px]" />
-        </div>
-        
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
+      <section data-scroll-section className="section-padding bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <ScrollReveal direction="up" distance={60}>
             <SectionHeader
               subtitle="Our Work Environment"
               title="Where Excellence Meets Innovation"
               description="A glimpse into our collaborative workspace and professional culture."
               centered={true}
-              theme="dark"
             />
           </ScrollReveal>
           
@@ -246,7 +231,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <AnimatedSection animation="fadeIn" data-scroll-section className="section-padding bg-white">
+      <AnimatedSection animation="fadeIn" data-scroll-section className="section-padding bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
           <div className="text-center mb-16">
             <motion.p

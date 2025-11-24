@@ -113,7 +113,7 @@ export default function Contact() {
               <AnimatedSection key={index} animation="slideUp" delay={index * 0.1}>
                 <motion.div
                   whileHover={{ y: -5 }}
-                  className="bg-gradient-to-br from-primary/5 to-accent/5 p-6 rounded-2xl border border-gray-100 text-center"
+                  className="bg-linear-to-br from-primary/5 to-accent/5 p-6 rounded-2xl border border-gray-100 text-center"
                 >
                   <div className="w-12 h-12 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center mx-auto mb-4">
                     <info.icon size={24} className="text-white" />
@@ -269,7 +269,7 @@ export default function Contact() {
               <div className="space-y-6">
                 {/* Map Placeholder */}
                 <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-80">
-                  <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+                  <div className="w-full h-full bg-linear-to-br from-primary/20 to-accent/20 flex items-center justify-center">
                     <div className="text-center p-8">
                       <MapPin size={48} className="mx-auto mb-4 text-primary" />
                       <p className="text-gray-600 font-medium">Interactive Map</p>
@@ -340,7 +340,7 @@ export default function Contact() {
           </AnimatedSection>
 
           <AnimatedSection animation="slideUp" delay={0.2}>
-            <div className="mt-12 p-8 bg-gradient-to-br from-primary to-primary-700 rounded-2xl text-white text-center">
+            <div className="mt-12 p-8 bg-linear-to-br from-primary to-primary-700 rounded-2xl text-white text-center">
               <h3 className="text-2xl font-bold mb-3">Looking for Career Opportunities?</h3>
               <p className="mb-6 text-white/90">
                 Join our team of experts and be part of something extraordinary.

@@ -64,7 +64,7 @@ export default function HeroCarousel() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-white to-blue-50">
+  <div className="relative w-full h-screen overflow-hidden bg-linear-to-br from-gray-50 via-white to-blue-50">
       {/* Background Images with Parallax */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -75,7 +75,7 @@ export default function HeroCarousel() {
           transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="absolute inset-0"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/20 to-transparent z-10" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/40 via-black/20 to-transparent z-10" />
           <Image
             src={slides[currentSlide].image}
             alt={slides[currentSlide].title}
@@ -201,7 +201,7 @@ export default function HeroCarousel() {
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20 z-30">
         <motion.div
-          className="h-full bg-gradient-to-r from-red-500 to-blue-500"
+          className="h-full bg-linear-to-r from-red-500 to-blue-500"
           initial={{ width: '0%' }}
           animate={{ width: '100%' }}
           key={currentSlide}
@@ -225,7 +225,7 @@ export default function HeroCarousel() {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute top-1/4 right-1/4 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-xl"
+          className="absolute top-1/4 right-1/4 w-32 h-32 bg-linear-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-xl"
         />
         <motion.div
           animate={{
@@ -238,7 +238,7 @@ export default function HeroCarousel() {
             repeat: Infinity,
             ease: 'linear',
           }}
-          className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-gradient-to-br from-red-400/20 to-orange-600/20 rounded-full blur-xl"
+          className="absolute bottom-1/4 left-1/4 w-48 h-48 bg-linear-to-br from-red-400/20 to-orange-600/20 rounded-full blur-xl"
         />
       </div>
     </div>

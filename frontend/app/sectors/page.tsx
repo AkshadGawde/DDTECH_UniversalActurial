@@ -117,7 +117,7 @@ export default function Sectors() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   whileHover={{ scale: 1.05 }}
-                  className="bg-gradient-to-br from-primary/5 to-accent/5 p-6 rounded-2xl text-center border border-gray-100"
+                  className="bg-linear-to-br from-primary/5 to-accent/5 p-6 rounded-2xl text-center border border-gray-100"
                 >
                   <div className="text-4xl mb-2">{stat.icon}</div>
                   <div className="text-3xl font-bold text-primary mb-1">{stat.clients}</div>
@@ -167,7 +167,7 @@ export default function Sectors() {
                   whileHover={{ x: 10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">1</span>
                   </div>
                   <div>
@@ -182,7 +182,7 @@ export default function Sectors() {
                   whileHover={{ x: 10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">2</span>
                   </div>
                   <div>
@@ -197,7 +197,7 @@ export default function Sectors() {
                   whileHover={{ x: 10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">3</span>
                   </div>
                   <div>
@@ -216,7 +216,7 @@ export default function Sectors() {
                   whileHover={{ x: -10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">4</span>
                   </div>
                   <div>
@@ -231,7 +231,7 @@ export default function Sectors() {
                   whileHover={{ x: -10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">5</span>
                   </div>
                   <div>
@@ -246,7 +246,7 @@ export default function Sectors() {
                   whileHover={{ x: -10 }}
                   className="flex items-start space-x-4 p-6 bg-gray-50 rounded-xl"
                 >
-                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-accent rounded-lg flex items-center justify-center shrink-0">
                     <span className="text-white font-bold text-xl">6</span>
                   </div>
                   <div>
