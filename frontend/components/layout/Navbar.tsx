@@ -28,7 +28,7 @@ export default function Navbar() {
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative w-12 h-12"
+              className="relative w-60 h-40"
             >
               <Image
                 src="/Logo.png"
@@ -38,12 +38,12 @@ export default function Navbar() {
                 priority
               />
             </motion.div>
-            <div className="hidden md:block">
+            {/* <div className="hidden md:block">
               <div className="text-xl font-bold text-[#1E3A8A]">
                 Universal Actuaries
               </div>
               <div className="text-xs text-slate-500">Benefit Consulting</div>
-            </div>
+            </div> */}
           </Link>
 
           {/* Desktop Navigation */}

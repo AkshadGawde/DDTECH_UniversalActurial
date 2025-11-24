@@ -4,7 +4,7 @@ import Hero from '@/components/sections/Hero';
 import SectionHeader from '@/components/sections/SectionHeader';
 import ServiceCard from '@/components/cards/ServiceCard';
 import AnimatedSection from '@/components/animation/AnimatedSection';
-import CTA from '@/components/sections/CTA';
+import CTA from '@/components/sections/CTASection';
 import { 
   Calculator, 
   Shield, 

@@ -4,7 +4,7 @@ import Hero from '@/components/sections/Hero';
 import Stats from '@/components/sections/Stats';
 import ServiceCard from '@/components/cards/ServiceCard';
 import SectorCard from '@/components/cards/SectorCard';
-import CTA from '@/components/sections/CTA';
+import CTA from '@/components/sections/CTASection';
 import { 
   Shield, 
   TrendingUp, 
@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <main>
       {/* Section 1: Hero - SNAP */}
-      <section className="snap-start snap-always">
+      <section className="snap-start snap-always text-center">
         <Hero
           title="Actuarial Excellence That Drives Results"
           subtitle="Trusted by Industry Leaders"

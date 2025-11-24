@@ -4,7 +4,7 @@ import Hero from '@/components/sections/Hero';
 import SectionHeader from '@/components/sections/SectionHeader';
 import SectorCard from '@/components/cards/SectorCard';
 import AnimatedSection from '@/components/animation/AnimatedSection';
-import CTA from '@/components/sections/CTA';
+import CTA from '@/components/sections/CTASection';
 import { 
   Building2, 
   Factory, 

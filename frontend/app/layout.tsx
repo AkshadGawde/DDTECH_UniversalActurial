@@ -1,39 +1,28 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import SmoothScrollProvider from '@/components/animation/SmoothScrollProvider';
-import PageTransition from '@/components/animation/PageTransition';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import SmoothScrollProvider from "@/components/sections/SmoothScrollProvider";
+import PageTransition from "@/components/animation/PageTransition";
+import ParallaxProvider from "@/components/scroll/ParallaxProvider";
+import EnhancedScrollIndicator from "@/components/scroll/EnhancedScrollIndicator";
+import CustomCursor from "@/components/CustomCursor";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: 'Universal Actuaries | Leading Actuarial & Benefit Consulting Services',
-  description:
-    'Premier actuarial and employee benefit consultancy firm providing comprehensive solutions across diverse sectors including insurance, healthcare, pensions, and corporate benefits.',
-  keywords: [
-    'actuarial services',
-    'employee benefits',
-    'benefit consulting',
-    'insurance consulting',
-    'pension consulting',
-    'actuarial consulting',
-  ],
-  authors: [{ name: 'Universal Actuaries' }],
-  openGraph: {
-    title: 'Universal Actuaries | Leading Actuarial Services',
-    description: 'Premier actuarial and employee benefit consultancy firm',
-    type: 'website',
-  },
+  title: "Universal Actuaries & Benefit Consultant | Leading Actuarial Services",
+  description: "Premier actuarial and employee benefit consultancy firm providing comprehensive solutions across diverse sectors including insurance, corporate benefits, and risk management.",
+  keywords: "actuarial services, employee benefits, risk management, insurance consulting, corporate benefits",
 };
 
 export default function RootLayout({
@@ -44,11 +33,17 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-neutral-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SmoothScrollProvider>
+          <CustomCursor />
           <Navbar />
-          <PageTransition>{children}</PageTransition>
+          <EnhancedScrollIndicator />
+          <ParallaxProvider>
+            <PageTransition>
+              {children}
+            </PageTransition>
+          </ParallaxProvider>
           <Footer />
         </SmoothScrollProvider>
       </body>

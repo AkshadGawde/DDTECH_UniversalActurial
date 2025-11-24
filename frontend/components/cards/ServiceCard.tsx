@@ -45,27 +45,29 @@ export default function ServiceCard({
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 0.03 }}
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-          className="absolute inset-0 bg-gradient-to-br from-[#1E3A8A] to-[#DC2626]"
+          className="absolute inset-0 bg-linear-to-br from-[#1E3A8A] to-[#DC2626]"
         />
 
-        {/* Icon container */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          className="relative w-16 h-16 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:shadow-lg transition-shadow duration-300"
-        >
-          <Icon className="w-8 h-8 text-white" />
-        </motion.div>
+        {/* Icon container - centered */}
+        <div className="flex justify-center mb-6">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="relative w-16 h-16 bg-linear-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300"
+          >
+            <Icon className="w-8 h-8 text-white" />
+          </motion.div>
+        </div>
 
-        {/* Content */}
-        <div className="relative space-y-4">
+        {/* Content - centered */}
+        <div className="relative space-y-4 text-center">
           {/* Title */}
           <h3 className="text-2xl font-bold text-slate-900 group-hover:text-[#1E3A8A] transition-colors duration-300">
             {title}
           </h3>
 
           {/* Description */}
-          <p className="text-slate-600 leading-relaxed">
+          <p className="text-slate-600 leading-relaxed max-w-md mx-auto">
             {description}
           </p>
 
@@ -74,7 +76,7 @@ export default function ServiceCard({
             initial={{ x: 0 }}
             whileHover={{ x: 4 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex items-center gap-2 text-[#DC2626] font-semibold text-base pt-2"
+            className="flex items-center justify-center gap-2 text-[#DC2626] font-semibold text-base pt-2"
           >
             <span>Learn more</span>
             <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -82,7 +84,7 @@ export default function ServiceCard({
         </div>
 
         {/* Corner accent - subtle */}
-        <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </motion.div>
     </Link>
   );

@@ -61,7 +61,7 @@ export default function SectorCard({
         </motion.div>
 
         {/* Dark overlay - muted */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/60 to-transparent" />
 
         {/* Icon - Check if Icon exists */}
         {Icon && (
@@ -69,7 +69,7 @@ export default function SectorCard({
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="w-14 h-14 bg-gradient-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center shadow-lg"
+              className="w-14 h-14 bg-linear-to-br from-[#1E3A8A] to-[#172554] rounded-xl flex items-center justify-center shadow-lg"
             >
               <Icon className="w-7 h-7 text-white" />
             </motion.div>
@@ -78,11 +78,11 @@ export default function SectorCard({
       </div>
 
       {/* Content */}
-      <div className="relative bg-white p-6 border-t-2 border-[#1E3A8A]/10 group-hover:border-[#DC2626]/30 transition-colors duration-500">
-        <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-[#1E3A8A] transition-colors duration-300">
+      <div className="relative bg-white p-6 border-t-2 border-[#1E3A8A]/10 group-hover:border-[#DC2626]/30 transition-colors duration-500 text-center">
+        <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-[#1E3A8A] transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-slate-600 text-sm leading-relaxed">
+        <p className="text-slate-600 text-sm leading-relaxed max-w-xs mx-auto">
           {description}
         </p>
 
@@ -110,7 +110,7 @@ export default function SectorCard({
       </div>
 
       {/* Subtle corner accent */}
-      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute top-0 right-0 w-16 h-16 bg-linear-to-br from-[#DC2626]/5 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   );
 }

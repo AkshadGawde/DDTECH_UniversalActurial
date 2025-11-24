@@ -7,6 +7,7 @@ interface SectionHeaderProps {
   subtitle?: string;
   description?: string;
   centered?: boolean;
+  theme?: 'light' | 'dark';
 }
 
 export default function SectionHeader({
@@ -14,7 +15,16 @@ export default function SectionHeader({
   subtitle,
   description,
   centered = true,
+  theme = 'light',
 }: SectionHeaderProps) {
+  const isDark = theme === 'dark';
+  const titleColor = isDark ? 'text-white' : 'text-primary';
+  const descriptionColor = isDark ? 'text-blue-100' : 'text-gray-600';
+  const subtitleBg = isDark ? 'bg-white/20' : 'bg-accent/10';
+  const subtitleColor = isDark ? 'text-white' : 'text-accent';
+  const accentColor = isDark ? 'bg-white' : 'bg-accent';
+  const backgroundDecor = isDark ? 'bg-white/5' : 'bg-primary/5';
+
   return (
     <div className={`mb-16 relative ${centered ? 'text-center' : ''}`}>
       {subtitle && (
@@ -30,12 +40,12 @@ export default function SectionHeader({
           className={`mb-4 ${centered ? 'flex justify-center' : ''}`}
         >
           <motion.span 
-            className="inline-block px-4 py-2 bg-accent/10 text-accent rounded-full text-sm font-medium relative overflow-hidden"
+            className={`inline-block px-4 py-2 ${subtitleBg} ${subtitleColor} rounded-full text-sm font-medium relative overflow-hidden`}
             whileHover={{ scale: 1.05 }}
           >
             {/* Badge glow effect */}
             <motion.div
-              className="absolute inset-0 bg-accent/20"
+              className={`absolute inset-0 ${isDark ? 'bg-white/20' : 'bg-accent/20'}`}
               animate={{
                 scale: [1, 1.5, 1],
                 opacity: [0.5, 0, 0.5],
@@ -60,7 +70,7 @@ export default function SectionHeader({
           type: 'spring',
           stiffness: 100,
         }}
-        className="text-4xl md:text-5xl font-bold text-primary mb-4 relative"
+        className={`text-4xl md:text-5xl font-bold ${titleColor} mb-4 relative`}
       >
         {/* Split title into words for staggered animation */}
         {title.split(' ').map((word, index) => (
@@ -86,7 +96,7 @@ export default function SectionHeader({
             whileInView={{ width: '80px', opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="h-1 bg-accent mx-auto mt-4 rounded-full relative overflow-hidden"
+            className={`h-1 ${accentColor} mx-auto mt-4 rounded-full relative overflow-hidden`}
           >
             {/* Shine effect on line */}
             <motion.div
@@ -105,28 +115,30 @@ export default function SectionHeader({
       </motion.h2>
 
       {description && (
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ 
-            duration: 0.6, 
-            delay: 0.3,
-            type: 'spring',
-            stiffness: 100,
-          }}
-          className={`text-lg text-gray-600 max-w-3xl ${
-            centered ? 'mx-auto' : ''
-          }`}
-        >
-          {description}
-        </motion.p>
+        <div className={centered ? 'flex justify-center' : ''}>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.3,
+              type: 'spring',
+              stiffness: 100,
+            }}
+            className={`text-lg ${descriptionColor} leading-relaxed ${
+              centered ? 'text-center max-w-2xl' : 'max-w-3xl'
+            }`}
+          >
+            {description}
+          </motion.p>
+        </div>
       )}
       
       {/* Background decoration */}
       {centered && (
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 ${backgroundDecor} rounded-full blur-3xl -z-10`}
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
