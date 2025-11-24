@@ -7,7 +7,7 @@ import SmoothScrollProvider from "@/components/sections/SmoothScrollProvider";
 import PageTransition from "@/components/animation/PageTransition";
 import ParallaxProvider from "@/components/scroll/ParallaxProvider";
 import EnhancedScrollIndicator from "@/components/scroll/EnhancedScrollIndicator";
-import CustomCursor from "@/components/CustomCursor";
+import CustomCursor from "@/components/layout/CustomCursor";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 
 const geistSans = Geist({
